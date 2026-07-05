@@ -57,14 +57,19 @@ public class RemoveMojo
             this.fileset = null;
         }
 
+        this.getLog().debug( "Removing filsets" );
         for ( Iterator<Fileset> it = filesets.iterator(); it.hasNext(); )
         {
             Fileset oneFileSet = it.next();
+
+            this.getLog().debug( "Removing " +  oneFileSet);
 
             try
             {
                 this.resolveRelativePath( oneFileSet );
                 this.truezip.remove( oneFileSet );
+
+                this.getLog().debug( oneFileSet + " removed");
             }
             catch ( Exception e )
             {
