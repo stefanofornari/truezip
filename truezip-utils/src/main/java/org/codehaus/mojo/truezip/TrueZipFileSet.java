@@ -22,7 +22,7 @@ package org.codehaus.mojo.truezip;
 import org.apache.maven.shared.model.fileset.FileSet;
 
 /**
- * TrueZip FileSet configuration
+ * TrueZip file set configuration.
  */
 public class TrueZipFileSet
     extends FileSet

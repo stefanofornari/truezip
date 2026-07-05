@@ -42,10 +42,13 @@ import org.codehaus.plexus.util.FileUtils;
 import de.schlichtherle.truezip.file.TFile;
 
 /**
- * Provides operations for use with FileSet instances, such as retrieving the included/excluded files, deleting all
- * matching entries, etc. This is a fork of maven's shared FileSetManager with the following changes - Use
- * TrueZipDirectoryScanner instead DirectoryScanner - use java.io.File in isSymLink(); Note: symbolic support is
- * unsupported
+ * Provides operations for use with {@link FileSet} instances, such as retrieving included/excluded files and deleting
+ * matching entries. This is a fork of Maven's shared FileSetManager with the following changes:
+ * <ul>
+ * <li>Use {@link TrueZipDirectoryScanner} instead of DirectoryScanner</li>
+ * <li>Use {@link java.io.File} in {@code isSymLink()}</li>
+ * </ul>
+ * Note: symbolic link support is unsupported.
  *
  * @author jdcasey
  * @version $Id$
@@ -54,23 +57,16 @@ public class TrueZipFileSetManager
 {
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
-    // ----------------------------------------------------------------------
-    // Constructors
-    // ----------------------------------------------------------------------
-
     public TrueZipFileSetManager()
     {
     }
 
-    // ----------------------------------------------------------------------
-    // Public methods
-    // ----------------------------------------------------------------------
-
     /**
-     * @param fileSet
-     * @return the included files as map
-     * @throws MapperException if any
-     * @see #getIncludedFiles(FileSet)
+     * Maps included files to destination paths.
+     *
+     * @param fileSet the file set
+     * @return the included files as a map
+     * @throws MapperException if mapping fails
      */
     public Map mapIncludedFiles( TrueZipFileSet fileSet )
         throws MapperException
@@ -103,8 +99,8 @@ public class TrueZipFileSetManager
     /**
      * Get all the filenames which have been included by the rules in this fileset.
      *
-     * @param fileSet The fileset defining rules for inclusion/exclusion, and base directory.
-     * @return the array of matching filenames, relative to the basedir of the file-set.
+     * @param fileSet the fileset defining rules for inclusion/exclusion and base directory
+     * @return the array of matching filenames, relative to the basedir of the file set
      */
     public String[] getIncludedFiles( TrueZipFileSet fileSet )
     {
@@ -121,8 +117,8 @@ public class TrueZipFileSetManager
     /**
      * Get all the directory names which have been included by the rules in this fileset.
      *
-     * @param fileSet The fileset defining rules for inclusion/exclusion, and base directory.
-     * @return the array of matching dirnames, relative to the basedir of the file-set.
+     * @param fileSet the fileset defining rules for inclusion/exclusion and base directory
+     * @return the array of matching dirnames, relative to the basedir of the file set
      */
     public String[] getIncludedDirectories( TrueZipFileSet fileSet )
     {
@@ -139,8 +135,8 @@ public class TrueZipFileSetManager
     /**
      * Get all the filenames which have been excluded by the rules in this fileset.
      *
-     * @param fileSet The fileset defining rules for inclusion/exclusion, and base directory.
-     * @return the array of non-matching filenames, relative to the basedir of the file-set.
+     * @param fileSet the fileset defining rules for inclusion/exclusion and base directory
+     * @return the array of non-matching filenames, relative to the basedir of the file set
      */
     public String[] getExcludedFiles( TrueZipFileSet fileSet )
     {
@@ -157,8 +153,8 @@ public class TrueZipFileSetManager
     /**
      * Get all the directory names which have been excluded by the rules in this fileset.
      *
-     * @param fileSet The fileset defining rules for inclusion/exclusion, and base directory.
-     * @return the array of non-matching dirnames, relative to the basedir of the file-set.
+     * @param fileSet the fileset defining rules for inclusion/exclusion and base directory
+     * @return the array of non-matching dirnames, relative to the basedir of the file set
      */
     public String[] getExcludedDirectories( TrueZipFileSet fileSet )
     {
@@ -175,8 +171,8 @@ public class TrueZipFileSetManager
     /**
      * Delete the matching files and directories for the given file-set definition.
      *
-     * @param fileSet The file-set matching rules, along with search base directory
-     * @throws IOException If a matching file cannot be deleted
+     * @param fileSet the file-set matching rules, along with search base directory
+     * @throws IOException if a matching file cannot be deleted
      */
     public void delete( TrueZipFileSet fileSet )
         throws IOException
@@ -187,22 +183,19 @@ public class TrueZipFileSetManager
     /**
      * Delete the matching files and directories for the given file-set definition.
      *
-     * @param fileSet The file-set matching rules, along with search base directory.
-     * @param throwsError Throw IOException when errors have occurred by deleting files or directories.
-     * @throws IOException If a matching file cannot be deleted and <code>throwsError=true</code>, otherwise print
-     *             warning messages.
+     * @param fileSet the file-set matching rules, along with search base directory
+     * @param throwsError throw {@link IOException} when errors occur while deleting files or directories
+     * @throws IOException if a matching file cannot be deleted and {@code throwsError} is {@code true}
      */
     public void delete( TrueZipFileSet fileSet, boolean throwsError )
         throws IOException
     {
         Set deletablePaths = findDeletablePaths( fileSet );
-
         List warnMessages = new LinkedList();
 
         for ( Iterator it = deletablePaths.iterator(); it.hasNext(); )
         {
             String path = (String) it.next();
-
             TFile file = new TFile( fileSet.getDirectory(), path );
 
             if ( file.exists() )
@@ -213,44 +206,32 @@ public class TrueZipFileSetManager
                     {
                         removeDir( file, fileSet.isFollowSymlinks(), throwsError, warnMessages );
                     }
-                    else
+                    else if ( !file.delete() )
                     {
-
-                        if ( !file.delete() )
-                        {
-                            String message = "Unable to delete symlink " + file.getAbsolutePath();
-                            if ( throwsError )
-                            {
-                                throw new IOException( message );
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    if ( !delete( file ) )
-                    {
-                        String message = "Failed to delete file " + file.getAbsolutePath() + ". Reason is unknown.";
+                        String message = "Unable to delete symlink " + file.getAbsolutePath();
                         if ( throwsError )
                         {
                             throw new IOException( message );
                         }
                     }
                 }
+                else if ( !delete( file ) )
+                {
+                    String message = "Failed to delete file " + file.getAbsolutePath() + ". Reason is unknown.";
+                    if ( throwsError )
+                    {
+                        throw new IOException( message );
+                    }
+                }
             }
         }
-
     }
-
-    // ----------------------------------------------------------------------
-    // Private methods
-    // ----------------------------------------------------------------------
 
     private boolean isSymlink( TFile file )
         throws IOException
     {
-        TFile fileInCanonicalParent = null;
-        java.io.File parentDir = file.getParentFile(); // truezip-plugin specific change
+        TFile fileInCanonicalParent;
+        java.io.File parentDir = file.getParentFile();
         if ( parentDir == null )
         {
             fileInCanonicalParent = file;
@@ -260,14 +241,12 @@ public class TrueZipFileSetManager
             fileInCanonicalParent = new TFile( parentDir.getCanonicalPath(), file.getName() );
         }
         return !fileInCanonicalParent.getCanonicalFile().equals( fileInCanonicalParent.getAbsoluteFile() );
-
     }
 
     private Set findDeletablePaths( TrueZipFileSet fileSet )
     {
         Set includes = findDeletableDirectories( fileSet );
         includes.addAll( findDeletableFiles( fileSet, includes ) );
-
         return includes;
     }
 
@@ -286,23 +265,17 @@ public class TrueZipFileSetManager
 
         if ( !fileSet.isFollowSymlinks() )
         {
-
-            // we need to see which entries were only excluded because they're symlinks...
             scanner.setFollowSymlinks( true );
             scanner.scan();
 
             List includedDirsAndSymlinks = Arrays.asList( scanner.getIncludedDirectories() );
-
             linksForDeletion.addAll( excludes );
             linksForDeletion.retainAll( includedDirsAndSymlinks );
-
             excludes.removeAll( includedDirsAndSymlinks );
         }
 
         excludeParentDirectoriesOfExcludedPaths( excludes, includes );
-
         includes.addAll( linksForDeletion );
-
         return includes;
     }
 
@@ -322,64 +295,58 @@ public class TrueZipFileSetManager
 
         if ( !fileSet.isFollowSymlinks() )
         {
-            // we need to see which entries were only excluded because they're symlinks...
             scanner.setFollowSymlinks( true );
             scanner.scan();
 
             List includedFilesAndSymlinks = Arrays.asList( scanner.getIncludedFiles() );
-
             linksForDeletion.addAll( excludes );
             linksForDeletion.retainAll( includedFilesAndSymlinks );
-
             excludes.removeAll( includedFilesAndSymlinks );
         }
 
         excludeParentDirectoriesOfExcludedPaths( excludes, includes );
-
         includes.addAll( linksForDeletion );
-
         return includes;
     }
 
     /**
      * Removes all parent directories of the already excluded files/directories from the given set of deletable
-     * directories. I.e. if "subdir/excluded.txt" should not be deleted, "subdir" should be excluded from deletion, too.
+     * directories. I.e. if {@code subdir/excluded.txt} should not be deleted, {@code subdir} should also be excluded
+     * from deletion.
      *
-     * @param excludedPaths The relative paths of the files/directories which are excluded from deletion, must not be
-     *            <code>null</code>.
-     * @param deletablePaths The relative paths to files/directories which are scheduled for deletion, must not be
-     *            <code>null</code>.
+     * @param excludedPaths the relative paths of the files/directories which are excluded from deletion; must not be
+     *            {@code null}
+     * @param deletablePaths the relative paths to files/directories which are scheduled for deletion; must not be
+     *            {@code null}
      */
     private void excludeParentDirectoriesOfExcludedPaths( Collection excludedPaths, Set deletablePaths )
     {
         for ( Iterator it = excludedPaths.iterator(); it.hasNext(); )
         {
             String path = (String) it.next();
-
             String parentPath = new TFile( path ).getParent();
 
             while ( parentPath != null )
             {
-                boolean removed = deletablePaths.remove( parentPath );
-
+                deletablePaths.remove( parentPath );
                 parentPath = new TFile( parentPath ).getParent();
             }
         }
 
         if ( !excludedPaths.isEmpty() )
         {
-            boolean removed = deletablePaths.remove( "" );
+            deletablePaths.remove( "" );
         }
     }
 
     /**
-     * Delete a directory
+     * Delete a directory.
      *
      * @param dir the directory to delete
      * @param followSymlinks whether to follow symbolic links, or simply delete the link
-     * @param throwsError Throw IOException when errors have occurred by deleting files or directories.
-     * @param warnMessages A list of warning messages used when <code>throwsError=false</code>.
-     * @throws IOException If a matching file cannot be deleted and <code>throwsError=true</code>.
+     * @param throwsError throw {@link IOException} when errors occur while deleting files or directories
+     * @param warnMessages a list of warning messages used when {@code throwsError} is {@code false}
+     * @throws IOException if a matching file cannot be deleted and {@code throwsError} is {@code true}
      */
     private void removeDir( TFile dir, boolean followSymlinks, boolean throwsError, List warnMessages )
         throws IOException
@@ -398,20 +365,17 @@ public class TrueZipFileSetManager
             {
                 removeDir( f, followSymlinks, throwsError, warnMessages );
             }
-            else
+            else if ( !delete( f ) )
             {
-                if ( !delete( f ) )
+                String message = "Unable to delete file " + f.getAbsolutePath();
+                if ( throwsError )
                 {
-                    String message = "Unable to delete file " + f.getAbsolutePath();
-                    if ( throwsError )
-                    {
-                        throw new IOException( message );
-                    }
+                    throw new IOException( message );
+                }
 
-                    if ( !warnMessages.contains( message ) )
-                    {
-                        warnMessages.add( message );
-                    }
+                if ( !warnMessages.contains( message ) )
+                {
+                    warnMessages.add( message );
                 }
             }
         }
@@ -423,14 +387,14 @@ public class TrueZipFileSetManager
             {
                 throw new IOException( message );
             }
-
         }
     }
 
     /**
-     * Delete a file
+     * Delete a file.
      *
      * @param f a file
+     * @return {@code true} if deletion succeeded
      */
     private boolean delete( TFile f )
     {
@@ -455,7 +419,6 @@ public class TrueZipFileSetManager
         }
 
         TrueZipDirectoryScanner scanner = new TrueZipDirectoryScanner();
-
         String[] includesArray = fileSet.getIncludesArray();
         String[] excludesArray = fileSet.getExcludesArray();
 
@@ -477,10 +440,7 @@ public class TrueZipFileSetManager
         scanner.setBasedir( basedir );
         scanner.setFollowSymlinks( fileSet.isFollowSymlinks() );
         scanner.setFollowArchive( fileSet.isFollowArchive() );
-
         scanner.scan();
-
         return scanner;
     }
-
 }

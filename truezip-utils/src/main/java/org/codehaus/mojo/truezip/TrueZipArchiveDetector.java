@@ -20,7 +20,7 @@ package org.codehaus.mojo.truezip;
  */
 
 /**
- * Interface to initialize archive file's extension
+ * Interface to initialize archive file extensions.
  */
 public interface TrueZipArchiveDetector
 {

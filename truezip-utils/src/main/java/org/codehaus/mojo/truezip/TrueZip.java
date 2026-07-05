@@ -26,79 +26,79 @@ import de.schlichtherle.truezip.file.TFile;
 import de.schlichtherle.truezip.fs.FsSyncException;
 
 /**
- * Generic interface to manipulate recognizable archives
+ * Generic interface to manipulate recognizable archives.
  */
 public interface TrueZip
 {
     /**
-     * List the file from FileSet's configuration
+     * List the files from the {@link TrueZipFileSet} configuration.
      *
-     * @param fileSet
-     * @return List of TFile
+     * @param fileSet the file set configuration
+     * @return list of {@link TFile} instances
      */
     List<TFile> list( TrueZipFileSet fileSet );
 
     /**
-     * Copy a set of file to another archive using FileSet configuration
+     * Copy a set of files to another archive using the file set configuration.
      *
-     * @param oneFileSet
-     * @throws IOException
+     * @param oneFileSet the file set configuration
+     * @throws IOException if an I/O error occurs
      */
     void copy( TrueZipFileSet oneFileSet )
         throws IOException;
 
     /**
-     * Copy a file or archive to another destination. Hash values of source's sub-archive(s) are not kept intact during
-     * copy. Use copy() interface instead of if needed
+     * Copy a file or archive to another destination. Hash values of source sub-archives are not kept intact during
+     * copy. Use the {@link #copy(TrueZipFileSet)} method instead if needed.
      *
-     * @param source
-     * @param dest
-     * @throws IOException
+     * @param source the source file
+     * @param dest the destination file
+     * @throws IOException if an I/O error occurs
      */
     void copyFile( TFile source, TFile dest )
         throws IOException;
 
     /**
-     * Copy a file for MOJO
+     * Move a file.
      *
-     * @param source
-     * @param dest
-     * @throws IOException
+     * @param source the source file
+     * @param dest the destination file
+     * @throws IOException if an I/O error occurs
      */
     void moveFile( TFile source, TFile dest )
         throws IOException;
 
     /**
-     * Move a set of files from one archive to another
+     * Move a set of files from one archive to another.
      *
-     * @param oneFileSet - The archive setup
-     * @throws IOException
+     * @param oneFileSet the archive setup
+     * @throws IOException if an I/O error occurs
      */
     void move( TrueZipFileSet oneFileSet )
         throws IOException;
 
     /**
-     * Remove a set of files from the archive setup
+     * Remove a set of files from the archive setup.
      *
-     * @param oneFileSet - the archive setup
-     * @throws IOException
+     * @param oneFileSet the archive setup
+     * @throws IOException if an I/O error occurs
      */
     void remove( TrueZipFileSet oneFileSet )
         throws IOException;
 
     /**
-     * Global sync
+     * Perform a global sync.
      *
-     * @throws FsSyncException
+     * @throws FsSyncException if synchronization fails
      */
     void sync()
         throws FsSyncException;
 
     /**
-     * Selectively sync
+     * Perform a selective sync.
      *
-     * @param file
-     * @throws FsSyncException
+     * @param file the file to sync
+     * @throws FsSyncException if synchronization fails
      */
     void sync( TFile file )
         throws FsSyncException;
