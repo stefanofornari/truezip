@@ -85,6 +85,24 @@
         <module>truezip-maven-plugin</module>
     </modules>
 
+    <dependencies>
+        <dependency>
+            <groupId>de.schlichtherle.truezip</groupId>
+            <artifactId>truezip-file</artifactId>
+            <version>${truezip.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.schlichtherle.truezip</groupId>
+            <artifactId>truezip-driver-zip</artifactId>
+            <version>${truezip.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.schlichtherle.truezip</groupId>
+            <artifactId>truezip-driver-tar</artifactId>
+            <version>${truezip.version}</version>
+        </dependency>
+    </dependencies>
+
     <build>
 
         <pluginManagement>
@@ -210,6 +228,16 @@
                                 </goals>
                             </execution>
                         </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>0.11.0</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>central.sonatype.com</publishingServerId>
+                            <autoPublish>true</autoPublish>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
