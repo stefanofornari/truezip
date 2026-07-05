@@ -137,4 +137,10 @@
         </plugins>
     </build>
 
+    <scm>
+        <connection>scm:git:git@github.com:stefanofornari/truezip.git</connection>
+        <developerConnection>scm:git:git@github.com:stefanofornari/truezip.git</developerConnection>
+        <url>https://github.com/stefanofornari/truezip</url>
+    </scm>
+
 </project>
