@@ -116,7 +116,7 @@
                 <version>0.11.0</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <publishingServerId>central</publishingServerId>
+                    <publishingServerId>central.sonatype.com</publishingServerId>
                     <autoPublish>true</autoPublish>
                 </configuration>
             </plugin>
