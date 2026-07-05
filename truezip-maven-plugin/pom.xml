@@ -31,7 +31,7 @@
     <artifactId>truezip-maven-plugin</artifactId>
     <name>TrueZIP Maven Plugin</name>
     <url>https://github.com/stefanofornari/truezip</url>
-    <version>0.1.5-SNAPSHOT</version>
+    <version>0.1.4-SNAPSHOT</version>
 
     <packaging>maven-plugin</packaging>
 
@@ -150,6 +150,5 @@
         <connection>scm:git:git@github.com:stefanofornari/truezip.git</connection>
         <developerConnection>scm:git:git@github.com:stefanofornari/truezip.git</developerConnection>
         <url>https://github.com/stefanofornari/truezip</url>
-      <tag>HEAD</tag>
-  </scm>
+    </scm>
 </project>
