@@ -42,6 +42,26 @@
         </license>
     </licenses>
 
+    <developers>
+        <developer>
+            <name>Dan Tran</name>
+            <email>dantran@gmail.com</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+
+        <developer>
+            <name>Rasto Cesnek</name>
+            <roles>
+                <role>Contributer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Stefano Fornari</name>
+        </developer>
+    </developers>
+
     <dependencies>
 
         <dependency>
