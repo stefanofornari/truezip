@@ -24,6 +24,8 @@ import java.io.IOException;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 
 import de.schlichtherle.truezip.file.TFile;
 
@@ -36,31 +38,33 @@ import de.schlichtherle.truezip.file.TFile;
  * <li>mvn truezip:cp -Dfrom=a.zip -Dto=b</li>
  * <li>mvn truezip:cp -Dfrom=b -Dto=b.zip</li>
  * </ul>
- * </p>
- * 
- * @goal cp
- * @requiresProject false
- * @version $Id: $
+ *
+ * Goal: cp
+ * Requires project: false
+ * Version: $Id: $
  */
+@Mojo(name = "cp", requiresProject = false)
 public class CliCopyMojo
     extends AbstractArchiveMojo
 {
     /**
      * Path to an archive to be unpacked.
-     * 
+     *
      * @parameter property="from"
      * @required
      * @since 1.0 beta-4
      */
+    @Parameter(property = "from", required = true)
     private File from;
 
     /**
      * Path to an archive or directory to unpack to.
-     * 
+     *
      * @parameter property="to"
      * @required
      * @since 1.0 beta-4
      */
+    @Parameter(property = "to", required = true)
     private File to;
 
     public void execute()
@@ -74,7 +78,7 @@ public class CliCopyMojo
 
         super.execute();
 
-        intitializeArchiveDectector();
+        initializeArchiveDetector();
 
         try
         {

@@ -26,6 +26,8 @@ import java.util.List;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 
 import de.schlichtherle.truezip.file.TFile;
 
@@ -37,31 +39,33 @@ import de.schlichtherle.truezip.file.TFile;
  * <ul>
  * <li>mvn truezip:ls -Dfrom=a.zip</li>
  * </ul>
- * </p>
- * 
- * @goal ls
- * @requiresProject false
- * @version $Id: $
+ *
+ * Goal: ls
+ * Requires project: false
+ * Version: $Id: $
  */
+@Mojo(name = "ls", requiresProject = false)
 public class CliListMojo
     extends AbstractArchiveMojo
 {
     /**
      * Path to an archive file to display.
-     * 
+     *
      * @parameter property="from"
      * @required
      * @since 1.0 beta-4
      */
+    @Parameter(property = "from", required = true)
     private File from;
 
     /**
      * Drill beyond sub archive.
-     * 
+     *
      * @parameter property="followSubArchive" default-value="false"
      * @required
      * @since 1.0 beta-4
      */
+    @Parameter(property = "followSubArchive", defaultValue = "false")
     private boolean followSubArchive;
 
     public void execute()
@@ -76,7 +80,7 @@ public class CliListMojo
 
         super.execute();
 
-        intitializeArchiveDectector();
+        initializeArchiveDetector();
 
         Fileset fileset = new Fileset();
         fileset.setDirectory( from.getAbsolutePath() );

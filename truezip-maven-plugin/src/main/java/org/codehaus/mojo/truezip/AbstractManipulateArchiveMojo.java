@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Parameter;
 
 public abstract class AbstractManipulateArchiveMojo
     extends AbstractArchiveMojo
@@ -31,26 +32,24 @@ public abstract class AbstractManipulateArchiveMojo
 
     /**
      * The list of FileSet to manipulate the archive with.
-     * 
-     * @parameter
-     * @since 1.0 beta-1
+     * Since 1.0 beta-1.
      */
+    @Parameter
     protected List<Fileset> filesets = new ArrayList<Fileset>( 0 );
 
     /**
      * A single FileSet to manipulate the archive with.
-     * 
-     * @parameter
-     * @since 1.0 beta-1
+     * Since 1.0 beta-1.
      */
+    @Parameter
     protected Fileset fileset;
 
     /**
      * Enable verbose mode.
-     * 
-     * @parameter default-value="false"
-     * @since 1.0 beta-1
+     * Default is false.
+     * Since 1.0 beta-1.
      */
+    @Parameter(defaultValue = "false")
     protected boolean verbose;
 
     public void execute()

@@ -21,17 +21,20 @@ package org.codehaus.mojo.truezip;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
 
 import de.schlichtherle.truezip.fs.FsSyncException;
 
 /**
  * Update open archives immediately, flush cached data to disk.
- * 
- * @deprecated use immediateUpdate option instead
- * @goal update
- * @phase process-resources
- * @version $Id: $
+ *
+ * Deprecated: use immediateUpdate option instead.
+ * Goal: update
+ * Phase: process-resources
+ * Version: $Id: $
  */
+@Mojo(name = "update", defaultPhase = LifecyclePhase.PROCESS_RESOURCES)
 public class ForceFileUpdateMojo
     extends AbstractArchiveMojo
 {

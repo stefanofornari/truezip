@@ -23,14 +23,17 @@ import java.util.Iterator;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
 
 /**
  * Remove a set of files from an existing archive.
- * 
- * @goal remove
- * @phase process-resources
- * @version $Id: $
+ *
+ * Goal: remove
+ * Phase: process-resources
+ * Version: $Id: $
  */
+@Mojo(name = "remove", defaultPhase = LifecyclePhase.PROCESS_RESOURCES)
 public class RemoveMojo
     extends AbstractManipulateArchiveMojo
 {
@@ -46,7 +49,7 @@ public class RemoveMojo
 
         super.execute();
 
-        intitializeArchiveDectector();
+        initializeArchiveDetector();
 
         if ( this.fileset != null )
         {

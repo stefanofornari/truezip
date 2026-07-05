@@ -23,40 +23,43 @@ import java.util.Iterator;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.plexus.util.StringUtils;
 
 import de.schlichtherle.truezip.file.TFile;
 
 /**
  * Move a single file or multiple files (via FileSet) between archives or directories.
- * 
- * @goal move
- * @phase process-resources
- * @version $Id: $
+ *
+ * Goal: move
+ * Phase: process-resources
+ * Version: $Id: $
  */
+@Mojo(name = "move", defaultPhase = LifecyclePhase.PROCESS_RESOURCES)
 public class MoveMojo
     extends AbstractManipulateArchiveMojo
 {
     /**
      * Path to original file.
-     * 
-     * @parameter
-     * @since 1.0 beta-1
+     *
+     * Since 1.0 beta-1.
      */
+    @Parameter
     private String from;
 
     /**
      * Path to destination file.
-     * 
-     * @parameter
-     * @since 1.0 beta-1
+     *
+     * Since 1.0 beta-1.
      */
+    @Parameter
     private String to;
 
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-
         if ( skip )
         {
             this.getLog().info( "Skip this execution" );
@@ -65,18 +68,17 @@ public class MoveMojo
 
         super.execute();
 
-        intitializeArchiveDectector();
+        initializeArchiveDetector();
 
         if ( !StringUtils.isBlank( from ) )
         {
-            TFile file = new TFile( this.resolveRelativePath( from ) );
-
-            if ( StringUtils.isBlank( from ) )
+            if ( StringUtils.isBlank( to ) )
             {
                 throw new MojoExecutionException(
-                                                  "You have specified 'from' configuration to perform the move, but 'to' configuration is not available. " );
+                    "You have specified 'from' configuration to perform the move, but 'to' configuration is not available." );
             }
 
+            TFile file = new TFile( this.resolveRelativePath( from ) );
             TFile tofile = new TFile( this.resolveRelativePath( to ) );
 
             try
@@ -97,7 +99,7 @@ public class MoveMojo
 
         for ( Iterator<Fileset> it = filesets.iterator(); it.hasNext(); )
         {
-            Fileset oneFileSet = (Fileset) it.next();
+            Fileset oneFileSet = it.next();
 
             try
             {
@@ -108,10 +110,8 @@ public class MoveMojo
             {
                 throw new MojoExecutionException( "Move fileset fails", e );
             }
-
         }
 
         this.tryImmediateUpdate();
-
     }
 }

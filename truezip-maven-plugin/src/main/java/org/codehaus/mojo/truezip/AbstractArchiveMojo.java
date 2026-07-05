@@ -22,6 +22,7 @@ package org.codehaus.mojo.truezip;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.model.fileset.FileSet;
 import org.codehaus.mojo.truezip.internal.DefaultTrueZip;
@@ -35,16 +36,14 @@ public abstract class AbstractArchiveMojo
 {
 
     /**
-     * Internal Maven's project
-     * 
-     * @parameter default-value="${project}"
-     * @readonly
-     * @since 1.0 beta-1
+     * Maven project.
+     * Since 1.0 beta-1.
      */
+    @Parameter(defaultValue = "${project}", readonly = true)
     protected MavenProject project;
 
     /**
-     * @since 1.0 beta-1
+     * Since 1.0 beta-1.
      */
     protected TrueZip truezip = new DefaultTrueZip();
 
@@ -52,18 +51,18 @@ public abstract class AbstractArchiveMojo
      * Enable automatic file update after each MOJO execution. If set to <code>false</code>, immediate update is not
      * performed. Then, the updated files are flushed at undefined time (when the VM finalizes objects). Otherwise, a
      * forced file update can be triggered by using <code>update</code> goal in an separate execution.
-     * 
-     * @parameter default-value="true"
-     * @since 1.0 beta-2
+     *
+     * Default is true.
+     * Since 1.0 beta-2.
      */
+    @Parameter(defaultValue = "true")
     protected boolean immediateUpdate;
 
     /**
-     * Skip
-     * 
-     * @parameter property="truezip.skip" default-value="false"
-     * @since 1.2
+     * Skip execution.
+     * Since 1.2.
      */
+    @Parameter(defaultValue = "false")
     protected boolean skip;
 
     protected String resolveRelativePath( String path )
@@ -91,7 +90,6 @@ public abstract class AbstractArchiveMojo
     protected void tryImmediateUpdate()
         throws MojoExecutionException
     {
-
         if ( immediateUpdate )
         {
             try
@@ -105,16 +103,16 @@ public abstract class AbstractArchiveMojo
         }
     }
 
-    protected void intitializeArchiveDectector()
+    protected void initializeArchiveDetector()
     {
         DefaultTrueZipArchiveDetector archiveDetector = new DefaultTrueZipArchiveDetector();
         archiveDetector.init();
     }
 
+    @Override
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
         // StaticLoggerBinder.getSingleton().setMavenLog( this.getLog() );
-
     }
 }

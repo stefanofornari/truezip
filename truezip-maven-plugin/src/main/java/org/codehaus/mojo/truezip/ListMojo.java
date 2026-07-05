@@ -28,6 +28,9 @@ import java.util.List;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -35,35 +38,36 @@ import de.schlichtherle.truezip.file.TFile;
 
 /**
  * List all files in the archive.
- * 
- * @goal list
- * @phase process-resources
- * @version $Id: $
+ *
+ * Goal: list
+ * Phase: process-resources
+ * Version: $Id: $
  */
+@Mojo(name = "list", defaultPhase = LifecyclePhase.PROCESS_RESOURCES)
 public class ListMojo
     extends AbstractManipulateArchiveMojo
 {
 
     /**
      * Write list output to a file if needed.
-     * 
-     * @parameter
-     * @since 1.0 beta-1
+     *
+     * Since 1.0 beta-1.
      */
+    @Parameter
     private File outputFile;
 
     /**
      * Use full path to display the list. Useful to get a relative content per fileset.
-     * 
-     * @parameter default-value="true"
-     * @since 1.1
+     *
+     * Default is true.
+     * Since 1.1.
      */
+    @Parameter(defaultValue = "true")
     private boolean printFullPath = true;
 
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-
         if ( skip )
         {
             this.getLog().info( "Skip this execution" );
@@ -72,17 +76,20 @@ public class ListMojo
 
         super.execute();
 
-        intitializeArchiveDectector();
+        initializeArchiveDetector();
 
         PrintStream ps = System.out;
-
         OutputStream os = null;
 
         if ( this.outputFile != null )
         {
             try
             {
-                outputFile.getParentFile().mkdirs();
+                File parent = outputFile.getParentFile();
+                if ( parent != null )
+                {
+                    parent.mkdirs();
+                }
                 os = new FileOutputStream( outputFile );
                 ps = new PrintStream( os );
             }
@@ -102,7 +109,6 @@ public class ListMojo
         }
 
         this.tryImmediateUpdate();
-
     }
 
     private void processFileSets( PrintStream ps )
@@ -116,7 +122,7 @@ public class ListMojo
 
         for ( int i = 0; i < filesets.size(); ++i )
         {
-            Fileset fileSet = (Fileset) this.filesets.get( i );
+            Fileset fileSet = this.filesets.get( i );
 
             if ( StringUtils.isBlank( fileSet.getDirectory() ) )
             {
@@ -132,14 +138,13 @@ public class ListMojo
                 TFile file = fileList.get( j );
                 if ( printFullPath )
                 {
-                    ps.println( ( file.getPath() ) );
+                    ps.println( file.getPath() );
                 }
                 else
                 {
                     int startPos = fileSet.getDirectory().length() + 1;
-                    ps.println( ( file.getPath().substring( startPos ) ) );
+                    ps.println( file.getPath().substring( startPos ) );
                 }
-
             }
         }
     }
