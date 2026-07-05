@@ -80,55 +80,6 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
-    <dependencyManagement>
-
-        <dependencies>
-            <dependency>
-                <groupId>org.apache.maven</groupId>
-                <artifactId>maven-core</artifactId>
-                <version>${maven.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.maven</groupId>
-                <artifactId>maven-plugin-api</artifactId>
-                <version>${maven.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.codehaus.plexus</groupId>
-                <artifactId>plexus-utils</artifactId>
-                <version>4.0.3</version>
-            </dependency>
-
-            <dependency>
-                <groupId>de.schlichtherle.truezip</groupId>
-                <artifactId>truezip-file</artifactId>
-                <version>${truezip.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>de.schlichtherle.truezip</groupId>
-                <artifactId>truezip-driver-zip</artifactId>
-                <version>${truezip.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>de.schlichtherle.truezip</groupId>
-                <artifactId>truezip-driver-tar</artifactId>
-                <version>${truezip.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.maven.shared</groupId>
-                <artifactId>file-management</artifactId>
-                <version>1.2.1</version>
-            </dependency>
-
-        </dependencies>
-
-
-    </dependencyManagement>
-
-
     <modules>
         <module>truezip-utils</module>
         <module>truezip-maven-plugin</module>
