@@ -18,169 +18,275 @@
 -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <parent>
-    <artifactId>mojo-parent</artifactId>
+
+    <modelVersion>4.0.0</modelVersion>
     <groupId>org.codehaus.mojo</groupId>
-    <version>38</version>
-  </parent>
+    <artifactId>truezip</artifactId>
+    <version>1.3</version>
+    <packaging>pom</packaging>
+    <name>TrueZip</name>
 
-  <modelVersion>4.0.0</modelVersion>
-  <artifactId>truezip</artifactId>
-  <version>1.3-SNAPSHOT</version>
-  <packaging>pom</packaging>
-  <name>TrueZip</name>
+    <description>
+        Project to create new or manipulate existing compressed archives using TrueZIP
+    </description>
+    <url>https://github.com/stefanofornari/truezip</url>
+    <inceptionYear>2008</inceptionYear>
 
-  <description>
-    Project to create new or manipulate existing compressed archives using TrueZIP
-  </description>
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/stefanofornari/truezip/issues</url>
+    </issueManagement>
 
-  <issueManagement>
-    <system>GitHub</system>
-    <url>https://github.com/mojohaus/truezip/issues/</url>
-  </issueManagement>
-  <ciManagement>
-    <system>Travis-CI</system>
-    <url>https://travis-ci.org/mojohaus/truezip</url>
-  </ciManagement>
+    <scm>
+        <connection>scm:git:git@github.com:stefanofornari/truezip.git</connection>
+        <developerConnection>scm:git:git@github.com:stefanofornari/truezip.git</developerConnection>
+        <url>https://github.com/stefanofornari/truezip</url>
+        <tag>HEAD</tag>
+    </scm>
 
-  <scm>
-    <connection>scm:git:https://github.com/mojohaus/truezip.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com/mojohaus/truezip.git</developerConnection>
-    <url>https://github.com/mojohaus/truezip</url>
-    <tag>master</tag>
-  </scm>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
-  <developers>
-    <developer>
-      <name>Dan Tran</name>
-      <email>dantran@gmail.com</email>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </developer>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>central.sonatype.com</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>central.sonatype.com</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 
-    <developer>
-      <name>Rasto Cesnek</name>
-      <roles>
-        <role>Contributer</role>
-      </roles>
-    </developer>
+    <properties>
+        <truezip.version>7.7.10</truezip.version>
+        <maven.version>3.6.3</maven.version>
+        <mojo.java.target>1.8</mojo.java.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
 
-  </developers>
+    <dependencyManagement>
 
-  <licenses>
-    <license>
-      <name>Apache License 2</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
+        <dependencies>
+            <dependency>
+                <groupId>org.apache.maven</groupId>
+                <artifactId>maven-core</artifactId>
+                <version>${maven.version}</version>
+            </dependency>
 
-  <prerequisites>
-    <maven>3.6.3</maven>
-  </prerequisites>
+            <dependency>
+                <groupId>org.apache.maven</groupId>
+                <artifactId>maven-plugin-api</artifactId>
+                <version>${maven.version}</version>
+            </dependency>
 
-  <properties>
-    <truezip.version>7.7.10</truezip.version>
-    <maven.version>3.6.3</maven.version>
-    <mojo.java.target>1.8</mojo.java.target>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <scmpublish.content>${project.build.directory}/staging/truezip</scmpublish.content>
-  </properties>
+            <dependency>
+                <groupId>org.codehaus.plexus</groupId>
+                <artifactId>plexus-utils</artifactId>
+                <version>4.0.3</version>
+            </dependency>
 
-  <dependencyManagement>
+            <dependency>
+                <groupId>de.schlichtherle.truezip</groupId>
+                <artifactId>truezip-file</artifactId>
+                <version>${truezip.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.schlichtherle.truezip</groupId>
+                <artifactId>truezip-driver-zip</artifactId>
+                <version>${truezip.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.schlichtherle.truezip</groupId>
+                <artifactId>truezip-driver-tar</artifactId>
+                <version>${truezip.version}</version>
+            </dependency>
 
-    <dependencies>
+            <dependency>
+                <groupId>org.apache.maven.shared</groupId>
+                <artifactId>file-management</artifactId>
+                <version>1.2.1</version>
+            </dependency>
 
-      <dependency>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>truezip-utils</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.maven</groupId>
-        <artifactId>maven-core</artifactId>
-        <version>${maven.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.maven</groupId>
-        <artifactId>maven-plugin-api</artifactId>
-        <version>${maven.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.codehaus.plexus</groupId>
-        <artifactId>plexus-utils</artifactId>
-        <version>4.0.3</version>
-      </dependency>
-
-      <dependency>
-        <groupId>de.schlichtherle.truezip</groupId>
-        <artifactId>truezip-file</artifactId>
-        <version>${truezip.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>de.schlichtherle.truezip</groupId>
-        <artifactId>truezip-driver-zip</artifactId>
-        <version>${truezip.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>de.schlichtherle.truezip</groupId>
-        <artifactId>truezip-driver-tar</artifactId>
-        <version>${truezip.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.maven.shared</groupId>
-        <artifactId>file-management</artifactId>
-        <version>1.2.1</version>
-      </dependency>
-
-    </dependencies>
+        </dependencies>
 
 
-  </dependencyManagement>
+    </dependencyManagement>
 
 
-  <modules>
-    <module>truezip-utils</module>
-    <module>truezip-maven-plugin</module>
-  </modules>
+    <modules>
+        <module>truezip-utils</module>
+        <module>truezip-maven-plugin</module>
+    </modules>
 
-  <build>
+    <build>
 
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.eclipse.m2e</groupId>
-          <artifactId>lifecycle-mapping</artifactId>
-          <version>1.0.0</version>
-          <configuration>
-            <lifecycleMappingMetadata>
-              <pluginExecutions>
-                <pluginExecution>
-                  <pluginExecutionFilter>
+        <pluginManagement>
+            <plugins>
+                <!-- Release Plugin -->
+                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <versionRange>[2.5.0,)</versionRange>
-                    <goals>
-                      <goal>copy</goal>
-                    </goals>
-                  </pluginExecutionFilter>
-                  <action>
-                    <ignore />
-                  </action>
-                </pluginExecution>
-              </pluginExecutions>
-            </lifecycleMappingMetadata>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-  </build>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>3.3.1</version>
+                    <configuration>
+                        <autoVersionSubmodules>true</autoVersionSubmodules>
+                        <useReleaseProfile>false</useReleaseProfile>
+                        <releaseProfiles>release</releaseProfiles>
+                    </configuration>
+                </plugin>
 
+                <!-- GPG Plugin for signing -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>3.2.8</version>
+                    <executions>
+                        <execution>
+                            <id>sign-artifacts</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>sign</goal>
+                            </goals>
+                            <configuration>
+                                <gpgArguments>
+                                    <arg>--pinentry-mode</arg>
+                                    <arg>loopback</arg>
+                                </gpgArguments>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- Source Plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>3.4.0</version>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <goals>
+                                <goal>jar-no-fork</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- Javadoc Plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>3.12.0</version>
+                    <executions>
+                        <execution>
+                            <id>attach-javadocs</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- Nexus Staging Plugin -->
+                <plugin>
+                    <groupId>org.sonatype.plugins</groupId>
+                    <artifactId>nexus-staging-maven-plugin</artifactId>
+                    <version>1.7.0</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <serverId>ossrh</serverId>
+                        <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                        <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                    </configuration>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>deploy-to-nexus</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>deploy</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
