@@ -127,15 +127,4 @@
         <developerConnection>scm:git:git@github.com:stefanofornari/truezip.git</developerConnection>
         <url>https://github.com/stefanofornari/truezip</url>
     </scm>
-
-    <distributionManagement>
-        <snapshotRepository>
-            <id>central.sonatype.com</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>central.sonatype.com</id>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
 </project>
