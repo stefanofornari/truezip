@@ -51,12 +51,14 @@ since its suffix wasn't registered.
 
 ## Releasing
 
-* Make sure `ssh-agent` is running.
-* Execute `mvn -B release:prepare release:perform`
+```bash
+(cd truezip-utils mvn -release:prepare release:perform)
+(cd truezip-maven-plugin mvn -release:prepare release:perform)
+```
 
 For publishing the site do the following:
 
-```
+```bash
 cd target/checkout
 mvn verify site site:stage scm-publish:publish-scm
 ```
